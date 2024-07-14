@@ -17,6 +17,7 @@ To use this website, simply navigate to [https://cbaumgart004.github.io/whatsThe
 ![Screenshot](assets\images\whatsTheWeatherThisWeek.jpg)
 ## Credits
 * Created by [Chris Baumgart](https://github.com/cbaumgart004)
+* The repository for this project can be found at [https://github.com/cbaumgart004/whatsTheWeather](https://github.com/cbaumgart004/whatsTheWeather)
 * This Application relies on the [Open Weather](https://openweathermap.org/guide) API for its data.
 ## License
 [MIT License](https://github.com/cbaumgart004/whatsTheWeather/blob/main/LICENSE)
