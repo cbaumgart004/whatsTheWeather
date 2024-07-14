@@ -25,20 +25,16 @@ const getWeather = function(cityName, stateName) {
             alert(`Error: ${response.statusText}`)
         }
     }).then(function (data) {
-        console.log(data);
-        console.log(data[0].lat, data[0].lon);
         fiveDayForecast(data[0].lat, data[0].lon);
     })
     .catch (function(error){
         console.log(error);
         alert('Unable to reach Weather API');
     });
-
 };
 
 const fiveDayForecast = function(lattitude, longitude) {
-    //const coordinatesArray = [];
-    //coordinatesArray.push(coordinate);
+    
     const lat = lattitude;
     const lon = longitude;
 
@@ -51,7 +47,6 @@ const fiveDayForecast = function(lattitude, longitude) {
                 alert(`Error: ${response.statusText}`);
             };
     }).then(function(data) {
-        console.log(data);
         parseWeather(data);
         parseWeeklyForecast(data);
     })
@@ -62,37 +57,31 @@ const fiveDayForecast = function(lattitude, longitude) {
 };
 
 const parseWeather = function (weather) {
-    console.log(weather.current);
-    
-    let weatherDaily = (weather.current.weather[0].description);
-    
-    console.log(weatherDaily);
-    renderCurrentForecast(weather);
-};
-
-const parseWeeklyForecast = function (weather) {
-    
-    let thisWeek = weather.daily.slice(1, 6);
-    console.log(thisWeek);
-    let time = dayjs.unix(thisWeek[0].dt).format('MMM D, YYYY');
-    
-    console.log(weather);
-    console.log(time);
-    renderWeeklyForecast(thisWeek);
-};
-const renderCurrentForecast = function (weather) {
+    //assign variables to render
     let time = dayjs.unix(weather.current.dt).format('dddd, MMM D, YYYY');
     let temp = parseInt(weather.current.temp);
     let weatherNow = weather.current.weather[0];
-    console.log(`your weather now variable${weatherNow}`);
+    
+    renderCurrentForecast(weather, time, temp, weatherNow);
+};
+
+const parseWeeklyForecast = function (weather) {
+    //pull a 5 day forecast
+    let thisWeek = weather.daily.slice(1, 6);
+    let time = dayjs.unix(thisWeek[0].dt).format('MMM D, YYYY');
+    renderWeeklyForecast(thisWeek);
+};
+
+const renderCurrentForecast = function (weather, time, temp, weatherNow) {
+    //Create the elements for today's forecast
     const forecastTodayCard = document.createElement('div');
     forecastTodayCard.classList.add('largeCard');
     currentCity = localStorage.getItem('currentCity');
     currentState = localStorage.getItem('currentState');
     const header = document.createElement('h2');
+    const displayTime = document.createElement('p1');
     const weatherDescription = document.createElement('p');
     const todayTemp = document.createElement('p');
-    const displayTime = document.createElement('p');
     const displayWind = document.createElement('p');
     const displayHumid = document.createElement('p');
     forecastTodayCard.style.backgroundImage = `url(https://openweathermap.org/img/wn/${weatherNow.icon}@2x.png)`
@@ -103,17 +92,14 @@ const renderCurrentForecast = function (weather) {
     displayTime.textContent = time;
     displayWind.textContent = displayWind.textContent = `Wind Speed:${parseInt(weather.current.wind_speed)} mph`;
     displayHumid.textContent = `Humidity: ${weather.current.humidity}%`;
-    console.log(`Today's forecast for ${header.textContent}`);
-    
-
-    
+    //add elements to the div
     forecastTodayCard.appendChild(header);
     forecastTodayCard.appendChild(displayTime);
     forecastTodayCard.appendChild(weatherDescription);
     forecastTodayCard.appendChild(todayTemp);
     forecastTodayCard.appendChild(displayWind);
     forecastTodayCard.appendChild(displayHumid);
-
+    //Add the div to the dom
     forecastToday.appendChild(forecastTodayCard);
 }
 
@@ -131,7 +117,6 @@ const renderWeeklyForecast = function (forecastArray) {
         displayWeekday.textContent = weekday;
         displayTemp.textContent = `${parseInt(forecastArray[i].temp.day)}\u00B0 F`;
         displayDesc.textContent = `${forecastArray[i].summary}`;
-        console.log(`Wind today ${forecastArray[i].wind_speed}`);
         displayWind.textContent = `Wind Speed: ${parseInt(forecastArray[i].wind_speed)} mph`;
         displayHumid.textContent = `Humidity: ${forecastArray[i].humidity}%`;
         let dailyIcon = forecastArray[i].weather[0].icon;
@@ -185,10 +170,11 @@ searchButton.addEventListener('click', function(event) {
         localStorage.setItem('currentState', currentState);
         
         getWeather(cityName.value, state.value);
-        //Only Return last 15 searches
-        if (history.length>14){
+        //Only Return last 10 searches
+        if (history.length>9){
             history.shift();
         }
+        //add to the history array
         history.push({'city': cityName.value, 'state': state.value});
         //clear elements in the page before performing a new search
         clear();
@@ -200,14 +186,15 @@ searchButton.addEventListener('click', function(event) {
     };
     
 });
-
+//event listeners for all the history elements
 searchHistory.addEventListener('click', function(event){
+    //if you click on a button and it is a button
     if(event.target.tagName === 'BUTTON') {
+        //event.target specifies which button is clicked
         let historicCity = event.target.getAttribute('city');
         let historicState = event.target.getAttribute('state');
         localStorage.setItem('currentCity', historicCity);
         localStorage.setItem('currentState', historicState);
-        console.log(`from you history: ${historicCity}`)
         clear();
         getWeather(historicCity, historicState);
         renderHistory();
@@ -217,4 +204,3 @@ searchHistory.addEventListener('click', function(event){
 
 renderHistory();
 
-//localStorage.clear();
