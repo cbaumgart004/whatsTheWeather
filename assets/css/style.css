@@ -1,21 +1,56 @@
 h1 {
     color:blue;
+    text-align: center;
 }
 .resultsFiveDay {
     display: flex;
+    margin-top: 10px;
     
+    
+}
+.resultsToday {
+    display:flex;
 }
 p {
     color: black;
 }
 .container {
     display: flex;
+    padding: 10px;
 }
 
 .search {
     flex-direction: column;
+    width: 30%;
+    padding-right: 10px;
 }
 
+.searchHistory {
+    display:flex;
+    flex-direction: column-reverse;
+    padding-top: 10px;
+    padding-right:10px;
+}
+.largeCard {
+    display:flex;
+    border:2px, solid, black;
+    background-color: blue;
+    background-size: contain;
+    border-radius: 10px;
+    width: 100%;
+    height: 260px;
+    padding-left: 10px;
+    background-repeat: no-repeat;
+    flex-direction: column;
+    color: white;
+}
+
+.largeCard p {
+    text-align: right;
+    padding-right: 10px;
+    color:white;
+    font-size: 20px;
+}
 .card {
     display: flex;
     border:2px, solid, black;
@@ -25,8 +60,44 @@ p {
     background-color: blue;
     background-size: contain;
     background-repeat: no-repeat;
-    align-items: flex-end;
-    width:100px;
-    height: 240px;
+    flex-direction: column;
+    justify-content: flex-end;
+    width:20%;
+    height: 280px;
     color: white;
+}
+
+
+
+.card p {
+    color: white;
+}
+
+.card h3 {
+    margin-bottom: auto;
+}
+
+.btn {
+    border:2px, solid, black;
+    border-radius:10px;
+    padding-top:5px;
+    background-color:rgb(53, 47, 107);
+    color: whitesmoke;
+}
+
+@media only screen and (max-width: 768px) {
+    .results {
+        width:100%;
+    }
+    .resultsFiveDay {
+        flex-direction: column;
+        
+    }
+
+    .card {
+        width: 100%;
+        height: 140px;
+        margin-top: 10px;
+        padding-right: 10px;
+    }
 }
