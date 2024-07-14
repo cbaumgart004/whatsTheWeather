@@ -1,12 +1,14 @@
-console.log(`link looking good`);
+
 //define variables for html elements
 const cityName = document.getElementById('cityName');
 const searchButton = document.getElementById('searchButton');
 const futureForecast = document.getElementById('resultsFiveDay');
 const forecastToday = document.getElementById('resultsToday');
 const state = document.getElementById('state');
+const searchHistory = document.getElementById('searchHistory');
 //define variable for APIKey
 const APIKey = `b657affac026785e279a481f8fd5894c`;
+const history = JSON.parse(localStorage.getItem('history'))||[]
 
 //fetch request
 const getWeather = function(cityName, stateName) {
@@ -99,6 +101,18 @@ const renderWeeklyForecast = function (forecastArray) {
         
     }
 };
+
+const renderHistory = function (city, state) {
+    history.push({'city': city, 'state': state});
+    localStorage.setItem('history', JSON.stringify(history));
+    //iterate through history array and create/append elements
+    for (let i=0; i<history.length;i++) {
+        const historyElement = document.createElement('div');
+        historyElement.textContent = `${history[i].city}, ${history[i].state}`
+        searchHistory.appendChild(historyElement)
+    };
+    console.log (`history: ${JSON.stringify(history)}`);
+};
 //event listener for Search Button
 searchButton.addEventListener('click', function(event) {
     event.preventDefault();
@@ -106,8 +120,11 @@ searchButton.addEventListener('click', function(event) {
         alert(`Please enter both city and state`)
     } else {
         getWeather(cityName.value, state.value);
-    console.log(cityName.value);
-    console.log(state.value);
+        renderHistory(cityName.value, state.value);
+        console.log(cityName.value);
+        console.log(state.value);
+        cityName.value = "";
+        state.value = "";
     };
     
 });
