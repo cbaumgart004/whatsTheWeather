@@ -17,7 +17,7 @@ const getWeather = function(cityName, stateName) {
     
     let city = cityName;
     let state = stateName;
-    const queryURL = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},3166-2&appid=${APIKey}`;
+    const queryURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city},${state},3166-2&appid=${APIKey}`;
     fetch(queryURL).then (function (response) {
         if (response.ok) {
             return response.json();
